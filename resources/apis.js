@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
-const backendUrl = 'http://localhost:8000';
+const backendUrl = 'http://localhost:6000';
 
 class Api{
     // Post
