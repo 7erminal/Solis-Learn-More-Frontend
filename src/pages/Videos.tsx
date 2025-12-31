@@ -53,11 +53,21 @@ const Videos: React.FC = () => {
         setShowDeleteVideoModal(state);
     }
 
-    const fetchVideos = async () => {
+    const fetchVideos = async (languageId = null, categoryId = null) => {
         setVideoModal(false);
         try {
             console.log("Fetching videos...");
-            const response = await new Api().get_('/api/portal/videos/');
+
+            let url = '/api/portal/videos/';
+            const params = new URLSearchParams();
+            
+            if (languageId) params.append('language', languageId);
+            if (categoryId) params.append('category', categoryId);
+            
+            if (params.toString()) {
+                url += '?' + params.toString();
+            }
+            const response = await new Api().get_(url);
             console.log("Fetched videos: ", response);
             // Handle the fetched categories (e.g., set state)
             if(response.status==200){
