@@ -135,7 +135,7 @@ const Videos: React.FC = () => {
                                             <p className="text-sm text-gray-500 mb-4">Language: {video.language.name}</p>
                                             <video width="100%" height="auto" controls>
                                                 {/* <source src={'http://localhost:8000/media/'+video.videoFile} type="video/mp4" /> */}
-                                                <source src={'https://videos.readils.com/'+video.videoFile} type="video/mp4" />
+                                                <source src={'https://videos.readils.com/media/'+video.videoFile} type="video/mp4" />
                                                 Your browser does not support the video tag.
                                             </video>
                                             <button className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" onClick={()=>{setSelectedVideoId(video.videoLogId.toString()); setDeleteVideoModal(true); }}>Delete</button>
