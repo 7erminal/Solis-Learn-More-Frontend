@@ -5,26 +5,26 @@ import Api from '../../resources/apis';
 import DeleteVideo from "../widgets/DeleteVideo";
 
 type Category = {
-    categoryId: Number,
-    name: string,
+    categoryId: Number
+    name: string
     description: string
 }
 
 type Language = {
-    languageId: Number,
-    name: string,
+    languageId: Number
+    name: string
     code: string
 }
 
 type Video = {
-    videoLogId: Number,
-    title: string,
-    description: string,
-    category: Category,
-    language: Language,
-    videoFile: string,
-    thumbnail: string,
-    created_at: string,
+    videoLogId: Number
+    title: string
+    description: string
+    category: Category
+    language: Language
+    videoFile: string
+    thumbnail: string
+    created_at: string
     updated_at: string
 }
 

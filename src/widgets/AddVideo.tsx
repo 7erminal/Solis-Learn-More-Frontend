@@ -35,7 +35,7 @@ const AddVideo: React.FC<Props> = ({setIsOpen, fetchVideos, languages, categorie
         formData.append("category", data.category.toString());
         formData.append("language", data.language.toString());
 
-        formData.append("timestamp", "120"); 
+        formData.append("timestamp", "10"); 
 
         applicationContext?.setIsLoading(true);
         await new Api().postMultipart_(formData, '/api/portal/videos/').then((response: any)=>{
