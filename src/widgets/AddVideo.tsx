@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 // @ts-ignore
 import Api from '../../resources/apis';
@@ -17,11 +17,14 @@ type Inputs = {
     videoFile: FileList,
     category: number,
     language: number,
+    videoType: boolean,
+    externalUrl: string,
 };
 
 const AddVideo: React.FC<Props> = ({setIsOpen, fetchVideos, languages, categories}) => {
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const applicationContext = useContext(ApplicationContext);
+    const [videoTypeCheck, setVideoTypeCheck] = useState(true)
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data);
@@ -36,6 +39,8 @@ const AddVideo: React.FC<Props> = ({setIsOpen, fetchVideos, languages, categorie
         formData.append("language", data.language.toString());
 
         formData.append("timestamp", "10"); 
+
+        console.log("Is url used: ", data.videoType);
 
         applicationContext?.setIsLoading(true);
         await new Api().postMultipart_(formData, '/api/portal/videos/').then((response: any)=>{
@@ -55,6 +60,10 @@ const AddVideo: React.FC<Props> = ({setIsOpen, fetchVideos, languages, categorie
             console.log("Error returned is ... ")
             console.log(error)
         })
+    }
+
+    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setVideoTypeCheck(event.target.checked);
     }
     
 
@@ -80,11 +89,21 @@ const AddVideo: React.FC<Props> = ({setIsOpen, fetchVideos, languages, categorie
                     <label className="block mb-2.5 text-sm font-medium text-heading">Description</label>
                     <input {...register("description", { required: true })} className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" />
                 </div>
-
+                
                 <div className="w-full max-w-sm min-w-[200px] mt-4">
-                    <label className="block mb-2.5 text-sm font-medium text-heading">Video File</label>
-                    <input type="file" {...register("videoFile", { required: true })} className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" />
+                    <label className="block mb-2.5 text-sm font-medium text-heading">Upload File</label>
+                    <input type="checkbox" {...register("videoType")} className="w-4 h-4 rounded border-slate-200" onChange={(e: React.ChangeEvent<HTMLInputElement>)=>handleCheckboxChange(e)} checked={videoTypeCheck} />
                 </div>
+                { videoTypeCheck ? 
+                    <div className="w-full max-w-sm min-w-[200px] mt-4">
+                        <label className="block mb-2.5 text-sm font-medium text-heading">Video file</label>
+                        <input type="file" {...register("videoFile", { required: false })} className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" />
+                    </div> :
+                    <div className="w-full max-w-sm min-w-[200px] mt-4">
+                        <label className="block mb-2.5 text-sm font-medium text-heading">External video url</label>
+                        <input {...register("externalUrl", { required: true })} className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" />
+                    </div>
+                }
 
                 <div className="w-full max-w-sm min-w-[200px] mt-4">
                     <label className="block mb-2.5 text-sm font-medium text-heading">Category</label>
