@@ -30,36 +30,74 @@ const AddVideo: React.FC<Props> = ({setIsOpen, fetchVideos, languages, categorie
         console.log(data);
         // Send data to backend
 
-        var formData = new FormData();
-        formData.append("title", data.title);
-        formData.append("description", data.description);
-        // Get the first file from FileList
-        formData.append("videoFile", data.videoFile[0]);
-        formData.append("category", data.category.toString());
-        formData.append("language", data.language.toString());
+        if(videoTypeCheck){
+            if(data.videoFile.length === 0){
+                alert("Please select a video file to upload.");
+                return;
+            }
+            var formData = new FormData();
+            formData.append("title", data.title);
+            formData.append("description", data.description);
+            // Get the first file from FileList
+            formData.append("videoFile", data.videoFile[0]);
+            formData.append("category", data.category.toString());
+            formData.append("language", data.language.toString());
 
-        formData.append("timestamp", "10"); 
+            formData.append("timestamp", "10"); 
 
-        console.log("Is url used: ", data.videoType);
+            console.log("Is url used: ", data.videoType);
 
-        applicationContext?.setIsLoading(true);
-        await new Api().postMultipart_(formData, '/api/portal/videos/').then((response: any)=>{
-            applicationContext?.setIsLoading(false);
-            console.log("Response returned is ... ")
-            console.log(response)
-            if(response.status==201){
-                if(response.data.StatusCode == 200){
-                    console.log("Video added successfully.");
-                    if(fetchVideos){
-                        fetchVideos();
+            applicationContext?.setIsLoading(true);
+            await new Api().postMultipart_(formData, '/api/portal/videos/').then((response: any)=>{
+                applicationContext?.setIsLoading(false);
+                console.log("Response returned is ... ")
+                console.log(response)
+                if(response.status==201){
+                    if(response.data.StatusCode == 200){
+                        console.log("Video added successfully.");
+                        if(fetchVideos){
+                            fetchVideos();
+                        }
                     }
                 }
-            }
-        }).catch((error: any) => {
-            applicationContext?.setIsLoading(false);
-            console.log("Error returned is ... ")
-            console.log(error)
-        })
+            }).catch((error: any) => {
+                applicationContext?.setIsLoading(false);
+                console.log("Error returned is ... ")
+                console.log(error)
+            })
+        } else {
+            var requestData = {
+                title: data.title,
+                description: data.description,
+                category: data.category,
+                externalUrl: data.externalUrl,
+                useUrl: true,
+                language: data.language,
+                timestamp: 10
+            };
+
+            console.log("Request data is ... ")
+            console.log(requestData)
+
+            applicationContext?.setIsLoading(true);
+            await new Api().post_(requestData, '/api/portal/videos/').then((response: any)=>{
+                applicationContext?.setIsLoading(false);
+                console.log("Response returned is ... ")
+                console.log(response)
+                if(response.status==201){
+                    if(response.data.StatusCode == 200){
+                        console.log("Video added successfully.");
+                        if(fetchVideos){
+                            fetchVideos();
+                        }
+                    }
+                }
+            }).catch((error: any) => {
+                applicationContext?.setIsLoading(false);
+                console.log("Error returned is ... ")
+                console.log(error)
+            })
+        }
     }
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
