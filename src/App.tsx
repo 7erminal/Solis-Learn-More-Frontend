@@ -75,7 +75,7 @@ function App() {
                                 <div className="h-full custom-scrollbar overflow-y-auto">
                                     <header className="sticky top-0 z-10 bg-white  px-8 py-4">
                                         <div className="flex justify-between items-center">
-                                            <h2 className="text-xl font-semibold text-gray-800">Solis</h2>
+                                            <h2 className="text-xl font-semibold text-gray-800">Skill Builder</h2>
                                             <div className="flex items-center space-x-4">
                                                 <button className="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition-colors duration-200">
                                                     Filter
