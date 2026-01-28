@@ -3,7 +3,7 @@ import axios from 'axios'
 // const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 // const backendUrl = 'http://localhost:8000';
 // const backendUrl = 'https://solis-learn-more-backend.readils.com'
-const backendUrl = 'http://localhost:6001'
+const backendUrl = 'http://184.174.33.200:7001'
 
 class Api{
     // Post
